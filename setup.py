@@ -3,7 +3,7 @@ import setuptools
 from setuptools import setup, find_packages
 
 setup(
-    name="obj2dist",        # 库名
+    name="obj2dict",        # 库名
     version="0.1.1",
     packages=find_packages(),
     install_requires=[
