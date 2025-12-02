@@ -6,7 +6,7 @@ from dataclasses import is_dataclass, asdict
 from typing import Any, Dict, Type, Callable
 from enum import Enum
 
-from prompt_toolkit.key_binding.bindings.named_commands import self_insert
+
 from pydantic import BaseModel
 import types
 
