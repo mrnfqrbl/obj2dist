@@ -3,8 +3,8 @@ import setuptools
 from setuptools import setup, find_packages
 
 setup(
-    name="class2dist",        # 库名
-    version="0.1.0",
+    name="obj2dist",        # 库名
+    version="0.1.1",
     packages=find_packages(),
     install_requires=[
         "pydantic",  # Pydantic 数据模型库
