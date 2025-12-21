@@ -10,6 +10,8 @@ from enum import Enum
 from pydantic import BaseModel
 import types
 
+
+
 # ===========================
 # 核心递归函数
 # ===========================
@@ -18,23 +20,21 @@ def _递归序列化(
         类型处理: Dict[Type, Callable[[Any], Any]],
         序列化可调用对象: bool = False
 ) -> Any:
-    # 可调用对象处理
-    if callable(v):
-        if 类型处理:
-            # 遍历可调用对象类型处理
-            for t, func in 类型处理.items():
-                if isinstance(v, t):
-                    return func(v)
-        # 默认处理
-        if 序列化可调用对象:
-            return repr(v)
-        else:
-            return None
+    #如果类型处理不是空字典邮可调用对象处理函数，默认不处理可调用对象
 
-    # 可序列化基类或已有转字典方法
+
+
+
+    #最先处理存在转字典方法的对象
+
     if hasattr(v, "转字典") and callable(v.转字典):
         return v.转字典()
-
+    #第二个处理
+    if 类型处理:
+        # 遍历可调用对象类型处理
+        for t, func in 类型处理.items():
+            if isinstance(v, t):
+                return func(v)
     # Pydantic BaseModel
     elif isinstance(v, BaseModel):
         return _递归序列化(v.dict(), 类型处理, 序列化可调用对象)
@@ -62,13 +62,16 @@ def _递归序列化(
     # 原子类型
     elif isinstance(v, (str, int, float, bool, type(None))):
         return v
+    #最后处理未匹配的对象
+    if callable(v):
 
-    # 调用外部类型处理
-    for t, func in 类型处理.items():
-        if isinstance(v, t):
-            return func(v)
+        # 默认处理
+        if 序列化可调用对象:
+            return repr(v)
+        else:
+            return None
 
-    # 未处理类型返回 None
+
     return None
 
 # ===========================
